@@ -226,7 +226,10 @@
 <div class="lightbox" id="lightbox" hidden>
   <button class="lightbox__close" id="lbClose" aria-label="닫기">✕</button>
   <button class="lightbox__nav lightbox__nav--prev" id="lbPrev" aria-label="이전 사진">‹</button>
-  <img class="lightbox__img" id="lbImg" alt="">
+  <picture class="lightbox__pic">
+    <source id="lbSource" type="image/webp">
+    <img class="lightbox__img" id="lbImg" alt="">
+  </picture>
   <button class="lightbox__nav lightbox__nav--next" id="lbNext" aria-label="다음 사진">›</button>
   <p class="lightbox__caption" id="lbCaption"></p>
 </div>

@@ -34,7 +34,10 @@
     const grid = $('#galleryGrid');
     grid.innerHTML = GALLERY.map((g, i) => `
       <button class="gcard reveal" type="button" data-index="${i}" aria-label="${g.caption} 크게 보기">
-        <img src="${g.src}" alt="${g.caption}" loading="lazy">
+        <picture>
+          ${g.webp ? `<source srcset="${g.webp}" type="image/webp">` : ''}
+          <img src="${g.src}" alt="${g.caption}" loading="lazy" decoding="async">
+        </picture>
         <span class="gcard__cap">${g.caption}</span>
       </button>`).join('');
 
@@ -65,10 +68,14 @@
   }
 
   function showSlide(idx) {
+    const g = GALLERY[idx];
     lbIndex = idx;
-    $('#lbImg').src = GALLERY[idx].src;
-    $('#lbImg').alt = GALLERY[idx].caption;
-    $('#lbCaption').textContent = GALLERY[idx].caption;
+    // 썸네일이 이미 받아둔 webp 를 그대로 재사용합니다.
+    if (g.webp) $('#lbSource').srcset = g.webp;
+    else $('#lbSource').removeAttribute('srcset');
+    $('#lbImg').src = g.src;
+    $('#lbImg').alt = g.caption;
+    $('#lbCaption').textContent = g.caption;
   }
 
   function openLightbox(idx) {

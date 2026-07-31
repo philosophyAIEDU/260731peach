@@ -72,18 +72,41 @@ const SHIPPING = {
 
 /*
  * 사진 갤러리
- *  assets/images/ 폴더에 사진을 넣고 아래 목록에 파일명을 적어주세요.
- *  사진 파일이 아직 없으면 자동으로 안내용 이미지가 대신 표시됩니다.
+ *  사진을 더 넣고 싶으시면 assets/images/ 에 파일을 올린 뒤
+ *  아래 목록에 { src: '경로', caption: '설명' } 한 줄을 추가하면 됩니다.
+ *  webp 는 용량을 줄인 사본으로, 없으면 그 줄을 빼셔도 됩니다.
  */
 const GALLERY = [
-  { src: 'assets/images/peach-01.jpg', caption: '당일 수확한 복숭아' },
-  { src: 'assets/images/peach-02.jpg', caption: '햇사레 감곡 복숭아 상자' },
-  { src: 'assets/images/peach-03.jpg', caption: '한 상자 실중량 4kg' },
-  { src: 'assets/images/peach-04.jpg', caption: '10 · 11개 선물용 구성' },
-  { src: 'assets/images/peach-05.jpg', caption: '하나하나 손으로 선별' },
-  { src: 'assets/images/peach-06.jpg', caption: '충주 감곡 복숭아 밭' },
-  { src: 'assets/images/peach-07.jpg', caption: '완숙 직전에 수확합니다' },
-  { src: 'assets/images/peach-08.jpg', caption: '안전하게 포장해 발송' },
+  {
+    src: 'assets/images/gallery-1.jpg',
+    webp: 'assets/images/gallery-1.webp',
+    caption: '한 상자에 가지런히 담은 복숭아',
+  },
+  {
+    src: 'assets/images/gallery-2.jpg',
+    webp: 'assets/images/gallery-2.webp',
+    caption: '노랗게 잘 익은 복숭아',
+  },
+  {
+    src: 'assets/images/gallery-3.jpg',
+    webp: 'assets/images/gallery-3.webp',
+    caption: '포장까지 마친 한 상자',
+  },
+  {
+    src: 'assets/images/gallery-4.jpg',
+    webp: 'assets/images/gallery-4.webp',
+    caption: '햇사레 감곡 정품 상자',
+  },
+  {
+    src: 'assets/images/gallery-5.jpg',
+    webp: 'assets/images/gallery-5.webp',
+    caption: '발송 준비를 마친 상자들',
+  },
+  {
+    src: 'assets/images/gallery-6.jpg',
+    webp: 'assets/images/gallery-6.webp',
+    caption: '상자마다 무게와 개수를 적어드려요',
+  },
 ];
 
 /* 농원 자랑거리 */
