@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>덕분에 농원 · 맛있는 복숭아</title>
+<meta name="description" content="직접 재배하여 당일 수확한 햇사레 감곡 복숭아. 한 상자 실중량 4kg, 20,000원부터. 부모님이 좋아하시는 싱그러운 여름의 선물.">
+
+<!-- 카카오톡·문자로 링크 공유할 때 보이는 미리보기 -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="덕분에 농원 · 맛있는 복숭아">
+<meta property="og:description" content="당일 수확한 햇사레 감곡 복숭아 · 한 상자 실중량 4kg · 20,000원부터">
+<meta property="og:image" content="assets/images/peach-01.jpg">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍑</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- ══════════ 상단 메뉴 ══════════ -->
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a class="nav__logo" href="#top">🍑 덕분에 농원</a>
+    <nav class="nav__links">
+      <a href="#gallery">사진</a>
+      <a href="#box">상자 안내</a>
+      <a href="#price">가격</a>
+      <a href="#order">주문하기</a>
+    </nav>
+    <a class="nav__call" id="navCall" href="#order">주문 문의</a>
+  </div>
+</header>
+
+<!-- ══════════ 히어로 ══════════ -->
+<section class="hero" id="top">
+  <div class="hero__deco hero__deco--1">🍑</div>
+  <div class="hero__deco hero__deco--2">🍑</div>
+  <div class="hero__deco hero__deco--3">🌿</div>
+
+  <div class="hero__inner">
+    <p class="hero__eyebrow">부모님이 좋아하시는 <span class="heart">♥</span></p>
+    <h1 class="hero__title">맛있는<br><span class="hero__title--big">복숭아</span></h1>
+    <p class="hero__ribbon">싱그러운 여름의 선물</p>
+
+    <div class="hero__meta">
+      <span>햇사레 감곡 복숭아</span>
+      <span class="dot"></span>
+      <span>한 상자 실중량 4kg</span>
+      <span class="dot"></span>
+      <span>20,000원부터</span>
+    </div>
+
+    <div class="hero__cta">
+      <a class="btn btn--primary" href="#order">주문하기</a>
+      <a class="btn btn--ghost" href="#gallery">사진 보기</a>
+    </div>
+  </div>
+
+  <div class="hero__wave" aria-hidden="true"></div>
+</section>
+
+<!-- ══════════ 농원 자랑 ══════════ -->
+<section class="features">
+  <div class="wrap features__grid" id="featureGrid"><!-- JS 생성 --></div>
+</section>
+
+<!-- ══════════ 사진 갤러리 ══════════ -->
+<section class="section section--tint" id="gallery">
+  <div class="wrap">
+    <h2 class="h2">복숭아 사진</h2>
+    <p class="sub">밭에서 상자에 담기까지, 있는 그대로 찍었습니다. 사진을 누르면 크게 볼 수 있어요.</p>
+    <div class="gallery" id="galleryGrid"><!-- JS 생성 --></div>
+  </div>
+</section>
+
+<!-- ══════════ 상자 안내 ══════════ -->
+<section class="section" id="box">
+  <div class="wrap">
+    <h2 class="h2">한 상자 안내</h2>
+    <p class="sub">개수가 적을수록 알이 굵어서 가격이 올라갑니다. 무게는 모두 똑같아요.</p>
+
+    <div class="boxinfo">
+      <div class="boxinfo__card boxinfo__card--main">
+        <div class="boxinfo__badge">가장 중요한 안내</div>
+        <p class="boxinfo__lead">한 상자는 <b>실중량이 4kg</b> 이에요.</p>
+        <p>그래서 박스작업 할 때는 <b>4.7 ~ 4.9kg</b> 사이로 포장합니다.</p>
+        <p class="boxinfo__note">(박스 무게 약 0.6kg)</p>
+      </div>
+
+      <div class="boxinfo__card">
+        <p class="boxinfo__q">왜 개수마다 가격이 다른가요?</p>
+        <ul class="boxinfo__list">
+          <li><b>실중량 4kg</b> 을 <b>10 · 11개</b> 로 만들면 큰 복숭아가 들어갔으니까 비싸요.
+            <span class="chip">10 · 11개 (선물용)</span></li>
+          <li><b>17개</b> 로 채우면 작은 사이즈로 채웠으니까 저렴해져요.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 크기 비교 시각화 -->
+    <div class="sizebar" id="sizeBar"><!-- JS 생성 --></div>
+  </div>
+</section>
+
+<!-- ══════════ 가격표 ══════════ -->
+<section class="section section--tint" id="price">
+  <div class="wrap">
+    <h2 class="h2">복숭아 가격안내</h2>
+    <p class="sub">모두 실중량 4kg 한 상자 기준입니다.</p>
+
+    <div class="pricegrid" id="priceGrid"><!-- JS 생성 --></div>
+
+    <div class="shipping">
+      <div class="shipping__icon">🚚</div>
+      <div>
+        <p class="shipping__title">택배비</p>
+        <p class="shipping__row">한 상자 <b id="ship1">4,000원</b> · 두 상자 묶음 <b id="ship2">5,000원</b></p>
+        <p class="shipping__note" id="shipNote"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 주문 계산기 + 주문서 ══════════ -->
+<section class="section" id="order">
+  <div class="wrap">
+    <h2 class="h2">주문하기</h2>
+    <p class="sub">수량을 고르고 아래 내용을 문자로 보내주시면 됩니다. 별도의 회원가입은 없어요.</p>
+
+    <div class="order">
+      <!-- 왼쪽: 수량 선택 -->
+      <div class="order__panel">
+        <h3 class="h3">1. 수량 선택</h3>
+        <div class="qty" id="qtyList"><!-- JS 생성 --></div>
+
+        <div class="total">
+          <div class="total__row"><span>상품 금액</span><b id="sumProduct">0원</b></div>
+          <div class="total__row"><span>택배비 <em id="sumBoxCount"></em></span><b id="sumShip">0원</b></div>
+          <div class="total__row total__row--final"><span>합계</span><b id="sumTotal">0원</b></div>
+        </div>
+      </div>
+
+      <!-- 오른쪽: 받는 분 정보 -->
+      <div class="order__panel">
+        <h3 class="h3">2. 받는 분 정보</h3>
+        <p class="order__hint">아래 칸을 채우면 보낼 문자 내용이 자동으로 만들어집니다. 입력한 내용은 서버로 전송되지 않고 이 화면에서만 사용돼요.</p>
+
+        <label class="field"><span>이름</span>
+          <input type="text" id="fName" placeholder="홍길동" autocomplete="name"></label>
+        <label class="field"><span>전화번호</span>
+          <input type="tel" id="fPhone" placeholder="010-1234-5678" autocomplete="tel"></label>
+        <label class="field"><span>주소</span>
+          <textarea id="fAddr" rows="2" placeholder="충북 충주시 ○○로 12, 101동 1001호" autocomplete="street-address"></textarea></label>
+        <label class="field"><span>남기실 말씀 <em>(선택)</em></span>
+          <textarea id="fMemo" rows="2" placeholder="예) 8월 5일 이후에 보내주세요 / 부재 시 경비실에 맡겨주세요"></textarea></label>
+
+        <h3 class="h3 h3--mt">3. 보낼 내용</h3>
+        <pre class="preview" id="preview"></pre>
+
+        <div class="order__actions">
+          <button class="btn btn--primary" id="btnCopy" type="button">주문서 복사하기</button>
+          <a class="btn btn--ghost" id="btnSms" href="#">문자로 보내기</a>
+          <a class="btn btn--ghost" id="btnTel" href="#">전화 걸기</a>
+        </div>
+        <p class="order__phone">주문 및 문의 · <b id="phoneText">010-0000-0000</b></p>
+        <p class="order__bank" id="bankText" hidden></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 자주 묻는 질문 ══════════ -->
+<section class="section section--tint">
+  <div class="wrap wrap--narrow">
+    <h2 class="h2">자주 묻는 질문</h2>
+
+    <details class="faq"><summary>한 상자에 정확히 몇 kg 들어있나요?</summary>
+      <p>복숭아만의 실중량이 4kg 입니다. 박스 무게(약 0.6kg)를 포함해서 저울에 올리면 4.7~4.9kg 사이가 나오도록 담습니다.</p></details>
+
+    <details class="faq"><summary>개수마다 가격이 다른 이유가 뭔가요?</summary>
+      <p>무게는 4kg 으로 같지만, 개수가 적을수록 한 알이 큽니다. 10~11개짜리는 굵은 복숭아만 골라 담아 선물용으로 나가고, 17개짜리는 작은 알로 채워 가격이 저렴합니다. 당도와 맛은 같습니다.</p></details>
+
+    <details class="faq"><summary>못난이 복숭아는 맛이 떨어지나요?</summary>
+      <p>아닙니다. 겉에 흠집이 있거나 모양이 고르지 않을 뿐, 당도와 신선도는 똑같습니다. 집에서 드시거나 잼·주스용으로 아주 좋아요.</p></details>
+
+    <details class="faq"><summary>언제 받아볼 수 있나요?</summary>
+      <p>주문하신 다음 수확 일정에 맞춰 당일 수확·당일 발송합니다. 보통 발송 다음 날 도착하며, 주말·공휴일과 택배사 사정에 따라 하루 정도 늦어질 수 있습니다.</p></details>
+
+    <details class="faq"><summary>여러 상자를 다른 주소로 보낼 수 있나요?</summary>
+      <p>가능합니다. 주문서에 받는 분별로 이름·전화번호·주소를 각각 적어서 보내주세요.</p></details>
+
+    <details class="faq"><summary>복숭아는 어떻게 보관하나요?</summary>
+      <p>복숭아는 상온에서 익습니다. 받으신 뒤 서늘한 곳에 두었다가 드시기 2~3시간 전에 냉장고에 넣으면 가장 맛있습니다. 무르기 쉬우니 겹쳐 쌓지 말고 펼쳐서 보관해주세요.</p></details>
+  </div>
+</section>
+
+<!-- ══════════ 푸터 ══════════ -->
+<footer class="footer">
+  <p class="footer__msg">♥ 맛있는 복숭아로 행복한 하루 되세요! ♥</p>
+  <p class="footer__farm">덕분에 농원 · 햇사레 감곡 복숭아</p>
+  <p class="footer__phone" id="footerPhone"></p>
+</footer>
+
+<!-- 모바일 하단 고정 주문 버튼 -->
+<a class="floatcta" href="#order">🍑 주문하기</a>
+
+<!-- 사진 크게보기 -->
+<div class="lightbox" id="lightbox" hidden>
+  <button class="lightbox__close" id="lbClose" aria-label="닫기">✕</button>
+  <button class="lightbox__nav lightbox__nav--prev" id="lbPrev" aria-label="이전 사진">‹</button>
+  <img class="lightbox__img" id="lbImg" alt="">
+  <button class="lightbox__nav lightbox__nav--next" id="lbNext" aria-label="다음 사진">›</button>
+  <p class="lightbox__caption" id="lbCaption"></p>
+</div>
+
+<!-- 복사 완료 알림 -->
+<div class="toast" id="toast"></div>
+
+<script src="assets/js/site-data.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
