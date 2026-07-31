@@ -10,6 +10,13 @@
   const $$ = (sel) => Array.from(document.querySelectorAll(sel));
   const won = (n) => n.toLocaleString('ko-KR') + '원';
 
+  // 앞 글자의 받침 유무에 따라 조사를 골라줍니다. (주소를 / 이름을)
+  function josa(word, withBatchim, withoutBatchim) {
+    const code = word.charCodeAt(word.length - 1);
+    if (code < 0xac00 || code > 0xd7a3) return withoutBatchim; // 한글이 아니면 기본값
+    return (code - 0xac00) % 28 ? withBatchim : withoutBatchim;
+  }
+
   /* ══════════ 농원 자랑거리 ══════════ */
   function renderFeatures() {
     $('#featureGrid').innerHTML = FEATURES.map((f) => `
@@ -207,7 +214,11 @@
     const addr  = $('#fAddr').value.trim();
     const memo  = $('#fMemo').value.trim();
 
-    const out = ['[복숭아 주문]', ''];
+    const today = new Date().toLocaleDateString('ko-KR', {
+      year: 'numeric', month: 'long', day: 'numeric',
+    });
+
+    const out = [`[복숭아 주문] ${today}`, ''];
 
     if (lines.length) {
       lines.forEach((l) => out.push(`· ${l.count} ${l.qty}상자 — ${won(l.sum)}`));
@@ -224,6 +235,40 @@
     return out.join('\n');
   }
 
+  /* ══════════ 빠진 항목 확인 ══════════ */
+  // 손님이 수량이나 주소를 빠뜨린 채 문자를 보내면
+  // 사장님이 다시 물어봐야 하니, 보내기 전에 먼저 확인합니다.
+  function findMissing() {
+    const missing = [];
+
+    if (!orderLines().length) {
+      missing.push({ label: '수량', el: $('#qtyList') });
+    }
+    [['#fName', '이름'], ['#fPhone', '전화번호'], ['#fAddr', '주소']].forEach(([sel, label]) => {
+      const el = $(sel);
+      if (!el.value.trim()) missing.push({ label, el, field: el.closest('.field') });
+    });
+
+    return missing;
+  }
+
+  function checkBeforeSend() {
+    $$('.field').forEach((f) => f.classList.remove('field--missing'));
+
+    const missing = findMissing();
+    if (!missing.length) return true;
+
+    missing.forEach((m) => m.field && m.field.classList.add('field--missing'));
+
+    const labels = missing.map((m) => m.label).join(', ');
+    toast(`${labels}${josa(labels, '을', '를')} 입력해주세요 🍑`);
+
+    const first = missing[0];
+    first.el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    if (first.el.focus) setTimeout(() => first.el.focus({ preventScroll: true }), 400);
+    return false;
+  }
+
   /* ══════════ 복사 · 문자 · 전화 ══════════ */
   function toast(msg) {
     const t = $('#toast');
@@ -234,6 +279,8 @@
   }
 
   async function copyOrder() {
+    if (!checkBeforeSend()) return;
+
     const text = $('#preview').textContent;
     try {
       await navigator.clipboard.writeText(text);
@@ -252,6 +299,9 @@
     }
   }
 
+  // 문자·전화 버튼은 휴대폰에서만 실제로 동작합니다.
+  const IS_PHONE = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+
   function updateSmsLink() {
     const num  = SITE.phone.replace(/[^0-9+]/g, '');
     const body = encodeURIComponent($('#preview').textContent);
@@ -261,17 +311,36 @@
     $('#btnTel').href = `tel:${num}`;
   }
 
+  function bindSendButtons() {
+    // PC 에서는 sms: / tel: 링크가 대부분 아무 반응이 없어서,
+    // 버튼을 감추는 대신 무엇을 하면 되는지 안내합니다.
+    if (!IS_PHONE) {
+      $('#btnSms').textContent = '문자로 보내기 (휴대폰에서)';
+      $('#pcHint').hidden = false;
+    }
+
+    $('#btnSms').addEventListener('click', (e) => {
+      if (!checkBeforeSend()) { e.preventDefault(); return; }
+      if (!IS_PHONE) {
+        e.preventDefault();
+        copyOrder(); // 대신 복사해드립니다 (안내 문구는 copyOrder 안에서 표시)
+      }
+    });
+
+    $('#btnTel').addEventListener('click', (e) => {
+      if (!IS_PHONE) {
+        e.preventDefault();
+        toast(`전화 주문은 ${SITE.phone} 로 걸어주세요 🍑`);
+      }
+    });
+  }
+
   /* ══════════ 연락처 표시 ══════════ */
   function renderContact() {
     const tel = `tel:${SITE.phone.replace(/[^0-9+]/g, '')}`;
     $('#phoneText').textContent = SITE.phone;
     $('#navCall').textContent = '주문 문의';
     $('#footerPhone').innerHTML = `주문 및 문의 · <a href="${tel}">${SITE.phone}</a>`;
-
-    if (SITE.bankAccount) {
-      $('#bankText').textContent = `입금 계좌 · ${SITE.bankAccount}`;
-      $('#bankText').hidden = false;
-    }
     document.title = `${SITE.farmName} · 맛있는 복숭아`;
   }
 
@@ -295,6 +364,20 @@
     });
   }
 
+  /* ══════════ 모바일 하단 주문 버튼 ══════════ */
+  // 주문 영역에 도착하면 버튼이 입력칸을 가리므로 숨깁니다.
+  function bindFloatCta() {
+    const cta = $('.floatcta');
+    const order = $('#order');
+    if (!cta || !order || !('IntersectionObserver' in window)) return;
+
+    const io = new IntersectionObserver(
+      ([en]) => cta.classList.toggle('is-hidden', en.isIntersecting),
+      { threshold: 0 }
+    );
+    io.observe(order);
+  }
+
   /* ══════════ 상단 메뉴 그림자 ══════════ */
   function bindNav() {
     const nav = $('#nav');
@@ -313,9 +396,16 @@
     renderQty();
     bindLightbox();
     bindNav();
+    bindSendButtons();
+    bindFloatCta();
 
     ['#fName', '#fPhone', '#fAddr', '#fMemo'].forEach((sel) => {
-      $(sel).addEventListener('input', update);
+      $(sel).addEventListener('input', (e) => {
+        // 채워 넣기 시작하면 빨간 표시를 지웁니다.
+        const field = e.target.closest('.field');
+        if (field && e.target.value.trim()) field.classList.remove('field--missing');
+        update();
+      });
     });
     $('#btnCopy').addEventListener('click', copyOrder);
 
