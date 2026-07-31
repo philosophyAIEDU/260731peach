@@ -365,17 +365,27 @@
   }
 
   /* ══════════ 모바일 하단 주문 버튼 ══════════ */
-  // 주문 영역에 도착하면 버튼이 입력칸을 가리므로 숨깁니다.
+  // 두 곳에서는 숨깁니다.
+  //  - 첫 화면: 바로 위에 같은 '주문하기' 버튼이 있어 겹칩니다
+  //  - 주문 영역: 주소 입력칸을 가립니다
   function bindFloatCta() {
     const cta = $('.floatcta');
-    const order = $('#order');
-    if (!cta || !order || !('IntersectionObserver' in window)) return;
+    if (!cta || !('IntersectionObserver' in window)) return;
 
-    const io = new IntersectionObserver(
-      ([en]) => cta.classList.toggle('is-hidden', en.isIntersecting),
-      { threshold: 0 }
-    );
-    io.observe(order);
+    const seen = { hero: true, order: false };
+    const apply = () => cta.classList.toggle('is-hidden', seen.hero || seen.order);
+
+    const watch = (el, key) => {
+      if (!el) return;
+      new IntersectionObserver(([en]) => {
+        seen[key] = en.isIntersecting;
+        apply();
+      }, { threshold: 0 }).observe(el);
+    };
+
+    watch($('.hero'), 'hero');
+    watch($('#order'), 'order');
+    apply();
   }
 
   /* ══════════ 상단 메뉴 그림자 ══════════ */

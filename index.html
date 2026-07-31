@@ -10,7 +10,7 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="덕분에 농원 · 맛있는 복숭아">
 <meta property="og:description" content="당일 수확한 햇사레 감곡 복숭아 · 한 상자 실중량 4kg · 20,000원부터">
-<meta property="og:image" content="assets/images/peach-01.jpg">
+<meta property="og:image" content="assets/images/peach-og.jpg">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍑</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -37,25 +37,37 @@
 <!-- ══════════ 히어로 ══════════ -->
 <section class="hero" id="top">
   <div class="hero__deco hero__deco--1">🍑</div>
-  <div class="hero__deco hero__deco--2">🍑</div>
   <div class="hero__deco hero__deco--3">🌿</div>
 
   <div class="hero__inner">
-    <p class="hero__eyebrow">부모님이 좋아하시는 <span class="heart">♥</span></p>
-    <h1 class="hero__title">맛있는<br><span class="hero__title--big">복숭아</span></h1>
-    <p class="hero__ribbon">싱그러운 여름의 선물</p>
+    <div class="hero__text">
+      <p class="hero__eyebrow">부모님이 좋아하시는 <span class="heart">♥</span></p>
+      <h1 class="hero__title">맛있는<br><span class="hero__title--big">복숭아</span></h1>
+      <p class="hero__ribbon">싱그러운 여름의 선물</p>
 
-    <div class="hero__meta">
-      <span>햇사레 감곡 복숭아</span>
-      <span class="dot"></span>
-      <span>한 상자 실중량 4kg</span>
-      <span class="dot"></span>
-      <span>20,000원부터</span>
+      <div class="hero__meta">
+        <span>햇사레 감곡 복숭아</span>
+        <span class="dot"></span>
+        <span>한 상자 실중량 4kg</span>
+        <span class="dot"></span>
+        <span>20,000원부터</span>
+      </div>
+
     </div>
 
+    <figure class="hero__photo">
+      <picture>
+        <source srcset="assets/images/peach-hero.webp" type="image/webp">
+        <img src="assets/images/peach-hero.jpg"
+             alt="복숭아 밭에서 갓 딴 복숭아를 맛있게 드시는 어르신 부부"
+             width="1400" height="933" fetchpriority="high" decoding="async">
+      </picture>
+    </figure>
+
+    <!-- 모바일에서는 사진 다음에 오도록 CSS 로 자리를 잡습니다 -->
     <div class="hero__cta">
       <a class="btn btn--primary" href="#order">주문하기</a>
-      <a class="btn btn--ghost" href="#gallery">사진 보기</a>
+      <a class="btn btn--ghost" href="#price">가격 보기</a>
     </div>
   </div>
 

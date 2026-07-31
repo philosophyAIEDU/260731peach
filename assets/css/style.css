@@ -159,7 +159,23 @@ button { font-family: inherit; cursor: pointer; }
     radial-gradient(circle at 85% 15%, rgba(255,217,201,.6), transparent 45%),
     linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%);
 }
-.hero__inner { position: relative; z-index: 2; width: min(900px, 100% - 40px); margin-inline: auto; }
+.hero__inner {
+  position: relative; z-index: 2;
+  width: min(1120px, 100% - 40px);
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: 1fr 1.08fr;
+  grid-template-areas:
+    'text photo'
+    'cta  photo';
+  align-content: center;
+  align-items: center;
+  gap: 0 44px;
+  text-align: left;
+}
+.hero__text  { grid-area: text; }
+.hero__photo { grid-area: photo; }
+.hero__cta   { grid-area: cta; }
 .hero__eyebrow {
   font-family: var(--font-title);
   font-size: clamp(18px, 3.4vw, 26px);
@@ -176,13 +192,9 @@ button { font-family: inherit; cursor: pointer; }
   letter-spacing: -2px;
   text-shadow: 3px 3px 0 rgba(255,255,255,.7);
 }
-.hero__title--big {
-  display: inline-block;
-  background: linear-gradient(180deg, #8a4a24, #5a2f16);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
+/* 그라데이션 글자(background-clip:text)는 흰 text-shadow 에 덮여
+   속이 빈 것처럼 보이므로, 포스터와 같은 진한 갈색을 그대로 씁니다. */
+.hero__title--big { display: inline-block; color: #5a2f16; }
 .hero__ribbon {
   display: inline-block;
   margin: 26px 0 0;
@@ -195,19 +207,49 @@ button { font-family: inherit; cursor: pointer; }
   box-shadow: 0 6px 16px rgba(214,40,74,.25);
 }
 .hero__meta {
-  display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+  display: flex; flex-wrap: wrap; align-items: center;
   gap: 10px 14px;
   margin: 26px 0 0;
   color: var(--brown-soft);
   font-size: 16px;
 }
 .hero__meta .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--peach); }
-.hero__cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
+.hero__cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; }
+
+/* 메인 사진 */
+.hero__photo {
+  position: relative;
+  margin: 0;
+  padding: 10px;
+  background: var(--paper);
+  border-radius: 28px;
+  box-shadow: 0 18px 46px rgba(107, 58, 30, .18);
+  transform: rotate(1.2deg);
+}
+/* 사진 뒤에 깔리는 복숭아빛 그림자 */
+.hero__photo::before {
+  content: '';
+  position: absolute; inset: 14px -14px -14px 14px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, var(--peach), var(--peach-soft));
+  opacity: .55;
+  z-index: -1;
+  transform: rotate(-2.4deg);
+}
+.hero__photo img {
+  width: 100%;
+  /* height 속성(933)이 CSS 를 이기지 않도록 auto 로 풀어줍니다.
+     3:2 가 아닌 사진으로 바꿔도 잘리기만 할 뿐 비율은 유지됩니다. */
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 20px;
+}
 
 .hero__deco { position: absolute; font-size: 84px; opacity: .35; user-select: none; pointer-events: none; }
-.hero__deco--1 { top: 8%;  left: 5%;  animation: float 7s ease-in-out infinite; }
-.hero__deco--2 { top: 62%; right: 7%; font-size: 62px; animation: float 9s ease-in-out infinite reverse; }
-.hero__deco--3 { top: 22%; right: 14%; font-size: 48px; animation: float 8s ease-in-out infinite; }
+/* 사진을 가리지 않도록 왼쪽 여백 쪽에만 둡니다 */
+.hero__deco--1 { top: 6%;  left: 3%;  animation: float 7s ease-in-out infinite; }
+.hero__deco--3 { bottom: 14%; left: 6%; font-size: 46px; animation: float 8s ease-in-out infinite reverse; }
 @keyframes float { 0%,100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-18px) rotate(6deg); } }
 
 .hero__wave {
@@ -215,6 +257,21 @@ button { font-family: inherit; cursor: pointer; }
   background: var(--cream);
   -webkit-mask: radial-gradient(circle at 50% 0, transparent 55px, #000 56px) repeat-x 0 0 / 112px 56px;
           mask: radial-gradient(circle at 50% 0, transparent 55px, #000 56px) repeat-x 0 0 / 112px 56px;
+}
+
+@media (max-width: 900px) {
+  .hero { padding: 46px 0 90px; }
+  /* 좁은 화면: 제목 → 사진 → 버튼 순서 */
+  .hero__inner {
+    grid-template-columns: 1fr;
+    grid-template-areas: 'text' 'photo' 'cta';
+    gap: 30px;
+    text-align: center;
+  }
+  .hero__meta, .hero__cta { justify-content: center; }
+  .hero__photo { transform: none; padding: 8px; }
+  .hero__photo::before { inset: 10px -10px -10px 10px; transform: rotate(-1.6deg); }
+  .hero__deco { display: none; }
 }
 
 /* ───────── 자랑거리 ───────── */
