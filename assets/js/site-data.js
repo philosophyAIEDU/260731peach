@@ -25,8 +25,34 @@ const BOX_INFO = {
 };
 
 /*
+ * 가격표 묶음
+ *  가격표를 두 덩어리로 나눠 보여줍니다.
+ *  id    : PRODUCTS 의 group 과 연결되는 식별자
+ *  title : 묶음 제목 (빈 문자열이면 제목 없이 바로 표시)
+ *  badge : 제목 옆 작은 표시 (없으면 '')
+ *  unit  : 카드 아래에 붙는 한 줄 설명
+ */
+const PRODUCT_GROUPS = [
+  {
+    id: 'basic',
+    title: '',
+    badge: '',
+    unit: '한 상자 (실중량 4kg)',
+  },
+  {
+    id: 'hard',
+    title: '딱딱한 복숭아',
+    badge: '7월 마감',
+    // 딱딱한 복숭아의 상자 무게는 확인되지 않아 적지 않았습니다.
+    // 4kg 으로 같다면 위 basic 처럼 '한 상자 (실중량 4kg)' 으로 바꿔주세요.
+    unit: '한 상자',
+  },
+];
+
+/*
  * 가격표
  *  id      : 내부 식별자
+ *  group   : 위 PRODUCT_GROUPS 의 id
  *  count   : 한 상자에 들어가는 개수
  *  price   : 상자당 가격(원)
  *  badge   : 뱃지 문구 (없으면 null)
@@ -35,6 +61,7 @@ const BOX_INFO = {
 const PRODUCTS = [
   {
     id: 'gift',
+    group: 'basic',
     count: '10 · 11개',
     price: 35000,
     badge: '선물용',
@@ -42,6 +69,7 @@ const PRODUCTS = [
   },
   {
     id: 'large',
+    group: 'basic',
     count: '12 · 13개',
     price: 30000,
     badge: null,
@@ -49,6 +77,7 @@ const PRODUCTS = [
   },
   {
     id: 'medium',
+    group: 'basic',
     count: '14 · 15개',
     price: 25000,
     badge: null,
@@ -56,10 +85,29 @@ const PRODUCTS = [
   },
   {
     id: 'value',
+    group: 'basic',
     count: '17개 또는 못난이',
     price: 20000,
     badge: '실속형',
     desc: '작은 사이즈로 채워 가격이 저렴합니다. 맛은 그대로! 잼·주스용으로도 좋아요.',
+  },
+
+  /* 딱딱한 복숭아 (7월 마감) */
+  {
+    id: 'hard-large',
+    group: 'hard',
+    count: '11 · 12 · 13개',
+    price: 35000,
+    badge: null,
+    desc: '아삭한 식감을 좋아하시는 분들께 나가는 복숭아입니다. 알이 굵은 구성이에요.',
+  },
+  {
+    id: 'hard-medium',
+    group: 'hard',
+    count: '14 · 15 · 16개',
+    price: 30000,
+    badge: null,
+    desc: '같은 딱딱한 복숭아를 조금 작은 알로 채운 구성입니다.',
   },
 ];
 

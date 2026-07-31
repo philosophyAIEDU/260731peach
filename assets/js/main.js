@@ -128,16 +128,32 @@
   }
 
   /* ══════════ 가격표 ══════════ */
+  const groupOf = (id) => PRODUCT_GROUPS.find((g) => g.id === id) || PRODUCT_GROUPS[0];
+  const itemsOf = (gid) => PRODUCTS.filter((p) => p.group === gid);
+
   function renderPrices() {
-    $('#priceGrid').innerHTML = PRODUCTS.map((p) => `
-      <article class="pcard reveal ${p.badge === '선물용' ? 'pcard--featured' : ''}">
-        ${p.badge ? `<span class="pcard__badge">${p.badge}</span>` : ''}
-        <div class="pcard__icon">🍑</div>
-        <h3 class="pcard__count">${p.count}</h3>
-        <p class="pcard__price">${p.price.toLocaleString('ko-KR')}<small>원</small></p>
-        <p class="pcard__unit">한 상자 (실중량 4kg)</p>
-        <p class="pcard__desc">${p.desc}</p>
-      </article>`).join('');
+    $('#priceGrid').innerHTML = PRODUCT_GROUPS.map((g) => {
+      const items = itemsOf(g.id);
+      if (!items.length) return '';
+
+      const head = g.title
+        ? `<h3 class="pgroup__title reveal">${g.title}
+             ${g.badge ? `<span class="pgroup__badge">${g.badge}</span>` : ''}
+           </h3>`
+        : '';
+
+      const cards = items.map((p) => `
+        <article class="pcard reveal ${p.badge === '선물용' ? 'pcard--featured' : ''}">
+          ${p.badge ? `<span class="pcard__badge">${p.badge}</span>` : ''}
+          <div class="pcard__icon">🍑</div>
+          <h4 class="pcard__count">${p.count}</h4>
+          <p class="pcard__price">${p.price.toLocaleString('ko-KR')}<small>원</small></p>
+          <p class="pcard__unit">${g.unit}</p>
+          <p class="pcard__desc">${p.desc}</p>
+        </article>`).join('');
+
+      return `<div class="pgroup">${head}<div class="pgroup__cards">${cards}</div></div>`;
+    }).join('');
 
     $('#ship1').textContent = won(SHIPPING.one);
     $('#ship2').textContent = won(SHIPPING.two);
@@ -148,19 +164,32 @@
   const cart = {}; // { 상품id: 수량 }
 
   function renderQty() {
-    $('#qtyList').innerHTML = PRODUCTS.map((p) => `
-      <div class="qrow" data-id="${p.id}">
-        <div class="qrow__info">
-          <div class="qrow__name">${p.count}${p.badge ? ` <small>(${p.badge})</small>` : ''}</div>
-          <div class="qrow__price">${won(p.price)} / 상자</div>
-        </div>
-        <div class="qrow__ctrl">
-          <button class="qbtn" type="button" data-act="minus" aria-label="${p.count} 수량 줄이기">−</button>
-          <input class="qnum" type="number" min="0" max="99" value="0"
-                 inputmode="numeric" aria-label="${p.count} 상자 수량">
-          <button class="qbtn" type="button" data-act="plus" aria-label="${p.count} 수량 늘리기">+</button>
-        </div>
-      </div>`).join('');
+    $('#qtyList').innerHTML = PRODUCT_GROUPS.map((g) => {
+      const items = itemsOf(g.id);
+      if (!items.length) return '';
+
+      // 묶음 제목이 있는 것만 소제목을 답니다 (딱딱한 복숭아 등)
+      const head = g.title
+        ? `<p class="qgroup">${g.title}${g.badge ? ` <span class="qgroup__badge">${g.badge}</span>` : ''}</p>`
+        : '';
+
+      return head + items.map((p) => {
+        const label = (g.title ? `${g.title} ` : '') + p.count;
+        return `
+        <div class="qrow" data-id="${p.id}">
+          <div class="qrow__info">
+            <div class="qrow__name">${p.count}${p.badge ? ` <small>(${p.badge})</small>` : ''}</div>
+            <div class="qrow__price">${won(p.price)} / 상자</div>
+          </div>
+          <div class="qrow__ctrl">
+            <button class="qbtn" type="button" data-act="minus" aria-label="${label} 수량 줄이기">−</button>
+            <input class="qnum" type="number" min="0" max="99" value="0"
+                   inputmode="numeric" aria-label="${label} 상자 수량">
+            <button class="qbtn" type="button" data-act="plus" aria-label="${label} 수량 늘리기">+</button>
+          </div>
+        </div>`;
+      }).join('');
+    }).join('');
 
     PRODUCTS.forEach((p) => { cart[p.id] = 0; });
 
@@ -228,7 +257,12 @@
     const out = [`[복숭아 주문] ${today}`, ''];
 
     if (lines.length) {
-      lines.forEach((l) => out.push(`· ${l.count} ${l.qty}상자 — ${won(l.sum)}`));
+      // 딱딱한 복숭아처럼 종류가 나뉜 것은 이름을 같이 적어 헷갈리지 않게 합니다.
+      lines.forEach((l) => {
+        const g = groupOf(l.group);
+        const name = g.title ? `${g.title} ${l.count}` : l.count;
+        out.push(`· ${name} ${l.qty}상자 — ${won(l.sum)}`);
+      });
       out.push('', `상품 ${won(product)} + 택배비 ${won(ship)} = 합계 ${won(product + ship)}`, '');
     } else {
       out.push('· (위에서 수량을 선택해주세요)', '');
