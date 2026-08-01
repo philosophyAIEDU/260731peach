@@ -131,14 +131,24 @@
   const groupOf = (id) => PRODUCT_GROUPS.find((g) => g.id === id) || PRODUCT_GROUPS[0];
   const itemsOf = (gid) => PRODUCTS.filter((p) => p.group === gid);
 
+  // 오늘 날짜를 '한국 시간' 기준 YYYY-MM-DD 로 돌려줍니다.
+  // 손님 기기의 시계를 그대로 쓰면, 한국보다 느린 시간대(예: 미국)에서
+  // 접속한 손님에게는 마감이 하루 늦게 걸립니다.
+  function todayInKorea() {
+    try {
+      // en-CA 는 YYYY-MM-DD 형식이라 문자열끼리 바로 비교할 수 있습니다.
+      return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul' }).format(new Date());
+    } catch (err) {
+      // 시간대 변환을 지원하지 않는 아주 옛날 브라우저 대비
+      const t = new Date(Date.now() + 9 * 3600 * 1000);
+      return t.toISOString().slice(0, 10);
+    }
+  }
+
   // closesAfter 날짜가 지났는지 봅니다. 그 날짜 당일까지는 주문할 수 있습니다.
-  // (손님 기기의 날짜를 기준으로 합니다)
   function isClosed(group) {
     if (!group.closesAfter) return false;
-    const [y, m, d] = group.closesAfter.split('-').map(Number);
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    return today > new Date(y, m - 1, d);
+    return todayInKorea() > group.closesAfter;
   }
 
   const isOrderable = (p) => !isClosed(groupOf(p.group));
@@ -274,8 +284,9 @@
     const addr  = $('#fAddr').value.trim();
     const memo  = $('#fMemo').value.trim();
 
+    // 주문 날짜도 한국 시간 기준으로 적습니다.
     const today = new Date().toLocaleDateString('ko-KR', {
-      year: 'numeric', month: 'long', day: 'numeric',
+      year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Seoul',
     });
 
     const out = [`[복숭아 주문] ${today}`, ''];
