@@ -433,6 +433,26 @@ button { font-family: inherit; cursor: pointer; }
   background: var(--green); color: #fff;
   font-size: 14px; padding: 3px 14px; border-radius: 99px;
 }
+
+/* 주문이 마감된 묶음 */
+.pgroup__badge--closed { background: var(--brown-soft); }
+.pgroup__note {
+  margin: -8px 0 18px;
+  text-align: center;
+  font-size: 15px;
+  color: var(--brown-soft);
+}
+.pgroup--closed .pgroup__title { color: var(--brown-soft); }
+.pgroup--closed .pcard {
+  opacity: .6;
+  filter: grayscale(.5);
+  box-shadow: none;
+}
+.pgroup--closed .pcard:hover {
+  transform: none;
+  border-color: var(--line);
+  box-shadow: none;
+}
 .pcard {
   position: relative;
   background: var(--paper);

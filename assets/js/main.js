@@ -131,15 +131,34 @@
   const groupOf = (id) => PRODUCT_GROUPS.find((g) => g.id === id) || PRODUCT_GROUPS[0];
   const itemsOf = (gid) => PRODUCTS.filter((p) => p.group === gid);
 
+  // closesAfter 날짜가 지났는지 봅니다. 그 날짜 당일까지는 주문할 수 있습니다.
+  // (손님 기기의 날짜를 기준으로 합니다)
+  function isClosed(group) {
+    if (!group.closesAfter) return false;
+    const [y, m, d] = group.closesAfter.split('-').map(Number);
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    return today > new Date(y, m - 1, d);
+  }
+
+  const isOrderable = (p) => !isClosed(groupOf(p.group));
+
   function renderPrices() {
     $('#priceGrid').innerHTML = PRODUCT_GROUPS.map((g) => {
       const items = itemsOf(g.id);
       if (!items.length) return '';
 
+      const closed = isClosed(g);
+      const badge = closed ? (g.closedBadge || '마감') : g.badge;
+
       const head = g.title
         ? `<h3 class="pgroup__title reveal">${g.title}
-             ${g.badge ? `<span class="pgroup__badge">${g.badge}</span>` : ''}
+             ${badge ? `<span class="pgroup__badge ${closed ? 'pgroup__badge--closed' : ''}">${badge}</span>` : ''}
            </h3>`
+        : '';
+
+      const note = closed && g.closedNote
+        ? `<p class="pgroup__note reveal">${g.closedNote}</p>`
         : '';
 
       const cards = items.map((p) => `
@@ -152,7 +171,9 @@
           <p class="pcard__desc">${p.desc}</p>
         </article>`).join('');
 
-      return `<div class="pgroup">${head}<div class="pgroup__cards">${cards}</div></div>`;
+      return `<div class="pgroup ${closed ? 'pgroup--closed' : ''}">
+                ${head}${note}<div class="pgroup__cards">${cards}</div>
+              </div>`;
     }).join('');
 
     $('#ship1').textContent = won(SHIPPING.one);
@@ -165,6 +186,9 @@
 
   function renderQty() {
     $('#qtyList').innerHTML = PRODUCT_GROUPS.map((g) => {
+      // 마감된 묶음은 아예 담을 수 없도록 목록에서 뺍니다.
+      if (isClosed(g)) return '';
+
       const items = itemsOf(g.id);
       if (!items.length) return '';
 
@@ -222,7 +246,7 @@
 
   function orderLines() {
     return PRODUCTS
-      .filter((p) => cart[p.id] > 0)
+      .filter((p) => cart[p.id] > 0 && isOrderable(p))
       .map((p) => ({ ...p, qty: cart[p.id], sum: p.price * cart[p.id] }));
   }
 
