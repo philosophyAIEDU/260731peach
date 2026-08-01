@@ -191,6 +191,30 @@
     $('#shipNote').textContent = SHIPPING.note;
   }
 
+  /* ══════════ 주문 전 안내 ══════════ */
+  function renderNotices() {
+    const box = $('#orderNotice');
+    if (!box) return;
+
+    if (!Array.isArray(ORDER_NOTICES) || !ORDER_NOTICES.length) {
+      box.hidden = true;
+      return;
+    }
+
+    box.innerHTML = `
+      <p class="notice__head">🍑 주문 전에 꼭 읽어주세요</p>
+      <ul class="notice__list">
+        ${ORDER_NOTICES.map((n) => `
+          <li class="notice__item">
+            <span class="notice__icon" aria-hidden="true">${n.icon || '🍑'}</span>
+            <span>
+              <b>${n.title}</b>
+              <span class="notice__text">${n.text}</span>
+            </span>
+          </li>`).join('')}
+      </ul>`;
+  }
+
   /* ══════════ 주문 계산기 ══════════ */
   const cart = {}; // { 상품id: 수량 }
 
@@ -479,6 +503,7 @@
     renderGallery();
     renderSizeBar();
     renderPrices();
+    renderNotices();
     renderQty();
     bindLightbox();
     bindNav();

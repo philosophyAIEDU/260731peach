@@ -492,6 +492,42 @@ button { font-family: inherit; cursor: pointer; }
 .shipping__note { font-size: 14px; color: var(--brown-soft); margin-top: 4px; }
 
 /* ───────── 주문 ───────── */
+/* 주문 전 안내 */
+.notice {
+  margin: 0 0 20px;
+  padding: 22px 26px;
+  background: #fff8f0;
+  border: 2px solid var(--peach);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+.notice__head {
+  margin: 0 0 14px;
+  font-family: var(--font-title);
+  font-size: 18px;
+  color: var(--pink-deep);
+}
+.notice__list { margin: 0; padding: 0; list-style: none; display: grid; gap: 14px; }
+.notice__item { display: flex; gap: 12px; align-items: flex-start; }
+.notice__icon {
+  flex-shrink: 0;
+  width: 34px; height: 34px;
+  display: grid; place-items: center;
+  font-size: 17px;
+  background: var(--peach-soft);
+  border-radius: 50%;
+}
+.notice__item b {
+  display: block;
+  font-family: var(--font-title);
+  font-weight: normal;
+  font-size: 16.5px;
+  color: var(--brown);
+}
+.notice__text { display: block; font-size: 15px; color: var(--brown-soft); margin-top: 2px; }
+
+@media (min-width: 861px) { .notice__list { grid-template-columns: 1fr 1fr; gap: 20px; } }
+
 .order { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
 .order__panel {
   background: var(--paper);
