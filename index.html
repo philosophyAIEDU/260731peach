@@ -163,16 +163,25 @@
         </div>
       </div>
 
-      <!-- 오른쪽: 받는 분 정보 -->
+      <!-- 오른쪽: 주문자 · 받는 분 정보 -->
       <div class="order__panel">
-        <h3 class="h3">2. 받는 분 정보</h3>
+        <h3 class="h3">2. 주문자 · 받는 분 정보</h3>
         <p class="order__hint">아래 칸을 채우면 보낼 문자 내용이 자동으로 만들어집니다. 입력한 내용은 서버로 전송되지 않고 이 화면에서만 사용돼요.</p>
 
-        <label class="field"><span>이름</span>
-          <input type="text" id="fName" placeholder="홍길동" autocomplete="name"></label>
-        <label class="field"><span>전화번호</span>
+        <label class="field"><span>보내는이 (주문자) 성함</span>
+          <input type="text" id="fOrderer" placeholder="김철수" autocomplete="name"></label>
+
+        <label class="field field--check">
+          <input type="checkbox" id="chkSameName" checked>
+          <span>받는 분 성함이 저와 같아요</span>
+        </label>
+
+        <label class="field" id="fieldReceiver" hidden><span>받는 분 성함</span>
+          <input type="text" id="fName" placeholder="김영희" autocomplete="name"></label>
+
+        <label class="field"><span>전화번호 <em>(받는 분)</em></span>
           <input type="tel" id="fPhone" placeholder="010-1234-5678" autocomplete="tel"></label>
-        <label class="field"><span>주소</span>
+        <label class="field"><span>주소 <em>(받는 분)</em></span>
           <textarea id="fAddr" rows="2" placeholder="충북 충주시 ○○로 12, 101동 1001호" autocomplete="street-address"></textarea></label>
         <label class="field"><span>남기실 말씀 <em>(선택)</em></span>
           <textarea id="fMemo" rows="2" placeholder="예) 8월 5일 이후에 보내주세요 / 부재 시 경비실에 맡겨주세요"></textarea></label>

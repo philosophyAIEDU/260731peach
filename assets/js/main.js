@@ -326,8 +326,13 @@
     updateSmsLink();
   }
 
+  // 받는 분 성함 칸이 필요한지 (주문자와 다를 때만) 판단합니다.
+  const isSameName = () => $('#chkSameName').checked;
+
   function buildMessage(lines, boxes, product, ship) {
-    const name  = $('#fName').value.trim();
+    const orderer = $('#fOrderer').value.trim();
+    const sameName = isSameName();
+    const receiver = sameName ? orderer : $('#fName').value.trim();
     const phone = $('#fPhone').value.trim();
     const addr  = $('#fAddr').value.trim();
     const memo  = $('#fMemo').value.trim();
@@ -352,7 +357,14 @@
       out.push('· (위에서 수량을 선택해주세요)', '');
     }
 
-    out.push(`이름   : ${name || '(입력해주세요)'}`);
+    // 받는 분이 주문자와 같으면 한 줄로, 다르면 두 줄로 나눠 적어
+    // 사장님이 누구에게 보내야 할지 헷갈리지 않게 합니다.
+    if (sameName) {
+      out.push(`이름   : ${orderer || '(입력해주세요)'}`);
+    } else {
+      out.push(`보내는이(주문자): ${orderer || '(입력해주세요)'}`);
+      out.push(`받는이         : ${receiver || '(입력해주세요)'}`);
+    }
     out.push(`전화   : ${phone || '(입력해주세요)'}`);
     out.push(`주소   : ${addr || '(입력해주세요)'}`);
     if (memo) out.push(`요청사항: ${memo}`);
@@ -369,7 +381,12 @@
     if (!orderLines().length) {
       missing.push({ label: '수량', el: $('#qtyList') });
     }
-    [['#fName', '이름'], ['#fPhone', '전화번호'], ['#fAddr', '주소']].forEach(([sel, label]) => {
+
+    const required = [['#fOrderer', '보내는이(주문자) 성함'], ['#fPhone', '전화번호'], ['#fAddr', '주소']];
+    // 받는 분이 주문자와 다르면 받는 분 성함도 따로 채워야 합니다.
+    if (!isSameName()) required.push(['#fName', '받는 분 성함']);
+
+    required.forEach(([sel, label]) => {
       const el = $(sel);
       if (!el.value.trim()) missing.push({ label, el, field: el.closest('.field') });
     });
@@ -536,7 +553,7 @@
     bindSendButtons();
     bindFloatCta();
 
-    ['#fName', '#fPhone', '#fAddr', '#fMemo'].forEach((sel) => {
+    ['#fOrderer', '#fName', '#fPhone', '#fAddr', '#fMemo'].forEach((sel) => {
       $(sel).addEventListener('input', (e) => {
         // 채워 넣기 시작하면 빨간 표시를 지웁니다.
         const field = e.target.closest('.field');
@@ -544,6 +561,17 @@
         update();
       });
     });
+
+    // 받는 분이 주문자와 같은지에 따라 성함 칸을 보이거나 숨깁니다.
+    $('#chkSameName').addEventListener('change', () => {
+      $('#fieldReceiver').hidden = isSameName();
+      if (!isSameName()) {
+        $('#fieldReceiver').classList.remove('field--missing');
+        $('#fName').focus();
+      }
+      update();
+    });
+
     $('#btnCopy').addEventListener('click', copyOrder);
 
     update();

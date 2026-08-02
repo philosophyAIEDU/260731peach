@@ -655,6 +655,9 @@ button { font-family: inherit; cursor: pointer; }
 .total__row--final b { color: var(--pink-deep); font-size: 26px; }
 
 .field { display: block; margin-bottom: 14px; }
+/* .field 의 display:block 이 브라우저 기본 hidden 스타일을 덮어써서
+   따로 명시하지 않으면 hidden 속성이 있어도 계속 보입니다. */
+.field[hidden] { display: none; }
 .field > span { display: block; font-size: 15px; color: var(--brown); margin-bottom: 5px; }
 .field > span em { font-style: normal; color: var(--brown-soft); font-size: 13px; }
 .field input, .field textarea {
@@ -672,6 +675,23 @@ button { font-family: inherit; cursor: pointer; }
 }
 /* 예시 문구가 실제 입력값처럼 보이지 않도록 흐리게 */
 .field input::placeholder, .field textarea::placeholder { color: #c3ab95; opacity: 1; }
+
+/* 받는 분 성함이 같은지 묻는 체크박스 줄 */
+.field--check {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: -4px 0 18px;
+  padding: 11px 14px;
+  background: var(--cream);
+  border-radius: 12px;
+}
+.field--check input[type="checkbox"] {
+  width: 19px; height: 19px;
+  accent-color: var(--pink);
+  flex-shrink: 0;
+}
+.field--check span { font-size: 15px; color: var(--brown); }
 /* 빠뜨린 칸 표시 */
 .field--missing input, .field--missing textarea {
   border-color: var(--pink-deep);
