@@ -92,7 +92,7 @@
   // 손님이 보낸 문자에서 이름·전화·주소·주문내용을 뽑아냅니다.
   // 손님이 문구를 고쳐 보냈을 수도 있어 최대한 너그럽게 찾습니다.
   function parseMessage(text) {
-    const out = { name: '', phone: '', address: '', items: '', boxes: '', memo: '' };
+    const out = { orderer: '', name: '', phone: '', address: '', items: '', boxes: '', memo: '' };
     if (!text.trim()) return out;
 
     const pick = (labels) => {
@@ -110,12 +110,8 @@
     out.address = pick(['주소', '배송지', '받는주소']);
     out.memo    = pick(['요청사항', '메모', '남기실 말씀', '요청']);
 
-    // 주문자(보내는이)가 받는 분과 다르게 적혀 있으면, 헷갈리지 않도록
-    // 메모 앞에 '[주문자: 이름]' 을 붙여서 함께 보이게 합니다.
-    const orderer = pick(['보내는이\\(주문자\\)', '보내는이', '주문자']);
-    if (orderer && orderer !== out.name) {
-      out.memo = `[주문자: ${orderer}]${out.memo ? ' ' + out.memo : ''}`;
-    }
+    // 주문자(보내는이)를 받는 분과 별도로 읽어옵니다.
+    out.orderer = pick(['보내는이\\(주문자\\)', '보내는이', '주문자']);
 
     // 아래는 손님이 '이름:' 같은 라벨 없이 그냥 적어 보낸 경우를 위한 것입니다.
     const lines = text.split('\n').map((l) => l.trim()).filter(Boolean);
@@ -165,11 +161,27 @@
     if (items.length) out.items = items.join(', ');
     if (boxes) out.boxes = String(boxes);
 
+    // 주문자를 따로 못 찾았으면 받는 분과 같은 사람으로 봅니다
+    // (기존 '이름' 한 줄짜리 문자도 그대로 지원됩니다).
+    if (!out.orderer) out.orderer = out.name;
+
     return out;
   }
 
+  // 받는 분 성함 칸이 필요한지 (주문자와 다를 때만) 판단합니다.
+  const isSameName = () => $('#chkSameName').checked;
+
   function fillForm(data) {
-    $('#fName').value  = data.name || '';
+    const orderer = data.orderer || data.name || '';
+    const receiver = data.name || '';
+    // 주문자와 받는 분이 실제로 다를 때만 체크를 풀고 칸을 보여줍니다.
+    const differs = !!(orderer && receiver && orderer !== receiver);
+
+    $('#fOrderer').value = orderer;
+    $('#fName').value    = receiver;
+    $('#chkSameName').checked  = !differs;
+    $('#fieldReceiver').hidden = !differs;
+
     $('#fPhone').value = data.phone || '';
     $('#fAddr').value  = data.address || '';
     $('#fItems').value = data.items || '';
@@ -178,8 +190,11 @@
   }
 
   function readForm() {
+    const orderer = $('#fOrderer').value.trim();
+    const same = isSameName();
     return {
-      name:    $('#fName').value.trim(),
+      orderer,
+      name:    same ? orderer : $('#fName').value.trim(),
       phone:   $('#fPhone').value.trim(),
       address: $('#fAddr').value.trim(),
       items:   $('#fItems').value.trim(),
@@ -199,11 +214,17 @@
   /* ══════════ 저장 버튼 ══════════ */
 
   function saveOrder() {
+    if (!isSameName() && !$('#fName').value.trim()) {
+      toast('받는 분 성함을 입력해주세요.');
+      $('#fName').focus();
+      return;
+    }
+
     const data = readForm();
 
-    if (!data.name && !data.phone && !data.address) {
-      toast('이름·전화·주소 중 하나는 적어주세요.');
-      $('#fName').focus();
+    if (!data.orderer && !data.phone && !data.address) {
+      toast('성함·전화·주소 중 하나는 적어주세요.');
+      $('#fOrderer').focus();
       return;
     }
 
@@ -282,6 +303,8 @@
 
   function cardHtml(o) {
     const detail = [o.boxes ? `${o.boxes}상자` : '', o.items].filter(Boolean).join(' · ');
+    // 주문자가 받는 분과 다를 때만 따로 보여줍니다 (같으면 한 번만 표시).
+    const showOrderer = o.orderer && o.orderer !== o.name;
 
     return `
       <article class="litem ${o.sent ? 'litem--done' : ''}" data-id="${o.id}">
@@ -290,6 +313,7 @@
             ${esc(o.name) || '<span class="litem__dim">(이름 없음)</span>'}
             ${o.phone ? `<a class="litem__phone" href="tel:${esc(o.phone.replace(/[^0-9+]/g, ''))}">${esc(o.phone)}</a>` : ''}
           </p>
+          ${showOrderer ? `<p class="litem__orderer">주문자 : <b>${esc(o.orderer)}</b></p>` : ''}
           ${o.address ? `<p class="litem__addr">${esc(o.address)}</p>` : ''}
           ${detail ? `<p class="litem__detail">${esc(detail)}</p>` : ''}
           ${o.memo ? `<p class="litem__memo">* ${esc(o.memo)}</p>` : ''}
@@ -351,11 +375,10 @@
     if (act === 'edit') {
       editingId = id;
       fillForm(orders[i]);
-      $('#fBoxes').value = orders[i].boxes || '';
       $('#editingTag').hidden = false;
       $('#btnSave').textContent = '수정 내용 저장';
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      $('#fName').focus({ preventScroll: true });
+      $('#fOrderer').focus({ preventScroll: true });
       return;
     }
 
@@ -439,6 +462,12 @@
       }
       fillForm(data);
       toast('읽어왔습니다. 틀린 곳이 있으면 고쳐주세요.');
+    });
+
+    // 받는 분이 주문자와 같은지에 따라 성함 칸을 보이거나 숨깁니다.
+    $('#chkSameName').addEventListener('change', () => {
+      $('#fieldReceiver').hidden = isSameName();
+      if (!isSameName()) $('#fName').focus();
     });
 
     $('#btnSave').addEventListener('click', saveOrder);

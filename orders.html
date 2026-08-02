@@ -45,22 +45,29 @@
       <button class="lbtn lbtn--sub" type="button" id="btnParse">붙여넣은 내용 읽어오기</button>
     </div>
 
+    <label class="lfield"><span>보내는이 (주문자) 성함</span>
+      <input type="text" id="fOrderer" placeholder="김철수"></label>
+
+    <label class="lfield lfield--check">
+      <input type="checkbox" id="chkSameName" checked>
+      <span>받는 분 성함이 같아요</span>
+    </label>
+
+    <label class="lfield" id="fieldReceiver" hidden><span>받는 분 성함</span>
+      <input type="text" id="fName" placeholder="김영희"></label>
+
     <div class="lgrid">
-      <label class="lfield"><span>이름</span>
-        <input type="text" id="fName" placeholder="홍길동"></label>
-      <label class="lfield"><span>전화번호</span>
+      <label class="lfield"><span>전화번호 <em>(받는 분)</em></span>
         <input type="tel" id="fPhone" placeholder="010-1234-5678"></label>
-    </div>
-
-    <label class="lfield"><span>주소</span>
-      <textarea id="fAddr" rows="2" placeholder="서울시 강남구 테헤란로 1, 202호"></textarea></label>
-
-    <div class="lgrid">
-      <label class="lfield"><span>주문 내용</span>
-        <input type="text" id="fItems" placeholder="10·11개 2상자"></label>
       <label class="lfield"><span>상자 수</span>
         <input type="number" id="fBoxes" min="0" max="999" placeholder="2" inputmode="numeric"></label>
     </div>
+
+    <label class="lfield"><span>주소 <em>(받는 분)</em></span>
+      <textarea id="fAddr" rows="2" placeholder="서울시 강남구 테헤란로 1, 202호"></textarea></label>
+
+    <label class="lfield"><span>주문 내용</span>
+      <input type="text" id="fItems" placeholder="10·11개 2상자"></label>
 
     <label class="lfield"><span>메모 <em>(택배 기사님께 전달할 내용도 여기에)</em></span>
       <input type="text" id="fMemo" placeholder="예) 부재 시 경비실 / 8월 5일 이후 발송"></label>

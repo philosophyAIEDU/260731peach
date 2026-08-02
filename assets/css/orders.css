@@ -82,8 +82,28 @@ details[open] .lcard__title--sum { margin-bottom: 18px; }
 
 /* ───────── 입력칸 ───────── */
 .lfield { display: block; margin-bottom: 14px; }
+/* .lfield 의 display:block 이 브라우저 기본 hidden 스타일보다 우선 적용돼서
+   따로 명시하지 않으면 hidden 속성을 줘도 계속 보입니다. */
+.lfield[hidden] { display: none; }
 .lfield > span { display: block; font-size: 14.5px; color: var(--brown); margin-bottom: 5px; }
 .lfield > span em { font-style: normal; font-size: 13px; color: var(--brown-soft); }
+
+/* 받는 분 성함이 같은지 묻는 체크박스 줄 */
+.lfield--check {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: -4px 0 18px;
+  padding: 11px 14px;
+  background: var(--cream);
+  border-radius: 12px;
+}
+.lfield--check input[type="checkbox"] {
+  width: 19px; height: 19px;
+  accent-color: var(--pink);
+  flex-shrink: 0;
+}
+.lfield--check span { font-size: 14.5px; color: var(--brown); }
 .lfield input, .lfield textarea {
   width: 100%;
   padding: 11px 14px;
@@ -181,6 +201,12 @@ details[open] .lcard__title--sum { margin-bottom: 18px; }
   display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px;
 }
 .litem__dim { color: var(--brown-soft); font-weight: normal; }
+.litem__orderer {
+  margin: 0 0 4px;
+  font-size: 14px;
+  color: var(--brown-soft);
+}
+.litem__orderer b { color: var(--brown); font-weight: normal; }
 .litem__phone {
   font-family: var(--font-body);
   font-size: 15px;
