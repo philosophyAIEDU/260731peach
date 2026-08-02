@@ -753,6 +753,19 @@ button { font-family: inherit; cursor: pointer; }
 .footer__phone { margin: 6px 0 0; opacity: .92; font-size: 15px; }
 .footer__phone a { border-bottom: 1px solid rgba(255,255,255,.5); }
 
+/* 손님 눈에는 잘 안 띄지만, 사장님은 찾아 누르실 수 있는 크기 */
+.footer__admin {
+  display: inline-block;
+  margin-top: 28px;
+  padding: 6px 16px;
+  border: 1px solid rgba(255, 255, 255, .35);
+  border-radius: 99px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, .75);
+  transition: color .15s, border-color .15s;
+}
+.footer__admin:hover { color: #fff; border-color: rgba(255, 255, 255, .7); }
+
 /* ───────── 모바일 고정 버튼 ───────── */
 .floatcta {
   display: none;
