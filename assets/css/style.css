@@ -358,6 +358,10 @@ button { font-family: inherit; cursor: pointer; }
   border-color: var(--pink);
   border-width: 3px;
   background: linear-gradient(180deg, #fff, #fff7f2);
+  /* 옆 카드보다 내용이 짧아도 가운데로 모이게 합니다 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .boxinfo__badge {
   position: absolute; top: -14px; left: 24px;
@@ -377,6 +381,11 @@ button { font-family: inherit; cursor: pointer; }
   background: var(--peach-soft); color: var(--brown);
   border-radius: 99px; padding: 2px 12px; font-size: 14px;
 }
+.boxinfo__hint {
+  margin: 14px 0 0;
+  font-size: 14px;
+  color: var(--brown-soft);
+}
 
 /* 크기 비교 막대 */
 .sizebar {
@@ -391,8 +400,35 @@ button { font-family: inherit; cursor: pointer; }
   text-align: center;
 }
 .szitem__peach { line-height: 1; margin-bottom: 10px; }
+.szitem__size {
+  display: inline-block;
+  margin-bottom: 6px;
+  padding: 2px 12px;
+  border-radius: 99px;
+  background: var(--peach-soft);
+  color: var(--pink-deep);
+  font-family: var(--font-title);
+  font-size: 13px;
+}
 .szitem__count { font-family: var(--font-title); color: var(--brown); font-size: 17px; }
 .szitem__label { font-size: 14px; color: var(--brown-soft); margin-top: 2px; }
+
+/* 실제 크기 비교 사진 */
+.sizephoto {
+  margin: 30px 0 0;
+  text-align: center;
+}
+.sizephoto img {
+  width: 100%;
+  max-width: 640px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+.sizephoto figcaption {
+  margin-top: 12px;
+  font-size: 14.5px;
+  color: var(--brown-soft);
+}
 
 @media (max-width: 860px) {
   .boxinfo { grid-template-columns: 1fr; }
@@ -475,6 +511,16 @@ button { font-family: inherit; cursor: pointer; }
 .pcard__count { font-family: var(--font-title); font-size: 24px; color: var(--brown); margin: 6px 0 2px; }
 .pcard__price { font-family: var(--font-title); font-size: 34px; color: var(--pink-deep); margin: 8px 0 0; }
 .pcard__price small { font-size: 18px; }
+.pcard__size {
+  display: inline-block;
+  margin: 8px 0 0;
+  padding: 2px 14px;
+  border-radius: 99px;
+  background: var(--cream);
+  color: var(--brown-soft);
+  font-size: 13.5px;
+  letter-spacing: .5px;
+}
 .pcard__unit { font-size: 14px; color: var(--brown-soft); margin: 0 0 12px; }
 .pcard__desc { font-size: 15px; color: var(--brown-soft); margin: 0; min-height: 3em; }
 
@@ -561,6 +607,16 @@ button { font-family: inherit; cursor: pointer; }
 .qrow.is-on { border-color: var(--pink); background: #fff7f2; }
 .qrow__info { flex: 1; min-width: 0; }
 .qrow__name { font-family: var(--font-title); color: var(--brown); font-size: 17px; }
+.qrow__size {
+  display: inline-block;
+  margin-right: 6px;
+  padding: 1px 9px;
+  border-radius: 99px;
+  background: var(--peach-soft);
+  color: var(--pink-deep);
+  font-size: 12.5px;
+  vertical-align: middle;
+}
 .qrow__price { font-size: 14px; color: var(--brown-soft); }
 .qrow__ctrl { display: flex; align-items: center; gap: 4px; }
 .qbtn {

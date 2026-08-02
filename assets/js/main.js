@@ -114,17 +114,38 @@
   /* ══════════ 크기 비교 (개수가 적을수록 알이 큼) ══════════ */
   function renderSizeBar() {
     const sizes = [
-      { emoji: 62, count: '10 · 11개', label: '제일 큰 알' },
-      { emoji: 52, count: '12 · 13개', label: '큰 알' },
-      { emoji: 44, count: '14 · 15개', label: '중간 알' },
-      { emoji: 36, count: '17개',      label: '작은 알' },
+      { emoji: 62, size: '1호', count: '10 · 11개', label: '제일 큰 알' },
+      { emoji: 52, size: '2호', count: '12 · 13개', label: '큰 알' },
+      { emoji: 44, size: '3호', count: '14 · 15개', label: '중간 알' },
+      { emoji: 36, size: '4호', count: '17개',      label: '작은 알' },
     ];
     $('#sizeBar').innerHTML = sizes.map((s) => `
       <div class="szitem reveal">
         <div class="szitem__peach" style="font-size:${s.emoji}px">🍑</div>
+        <div class="szitem__size">${s.size}</div>
         <div class="szitem__count">${s.count}</div>
         <div class="szitem__label">${s.label}</div>
       </div>`).join('');
+  }
+
+  /* ══════════ 실제 크기 비교 사진 ══════════ */
+  // 사진 파일이 없거나 못 불러오면 자리를 그냥 숨깁니다.
+  function renderSizePhoto() {
+    const box = $('#sizePhoto');
+    if (!box || typeof SIZE_PHOTO === 'undefined' || !SIZE_PHOTO.src) {
+      if (box) box.hidden = true;
+      return;
+    }
+
+    box.innerHTML = `
+      <picture>
+        ${SIZE_PHOTO.webp ? `<source srcset="${SIZE_PHOTO.webp}" type="image/webp">` : ''}
+        <img src="${SIZE_PHOTO.src}" alt="${SIZE_PHOTO.caption || '크기 비교 사진'}" loading="lazy" decoding="async">
+      </picture>
+      ${SIZE_PHOTO.caption ? `<figcaption>${SIZE_PHOTO.caption}</figcaption>` : ''}`;
+
+    box.hidden = false;
+    box.querySelector('img').addEventListener('error', () => { box.hidden = true; });
   }
 
   /* ══════════ 가격표 ══════════ */
@@ -175,6 +196,7 @@
         <article class="pcard reveal ${p.badge === '선물용' ? 'pcard--featured' : ''}">
           ${p.badge ? `<span class="pcard__badge">${p.badge}</span>` : ''}
           <div class="pcard__icon">🍑</div>
+          ${p.size ? `<p class="pcard__size">${p.size}</p>` : ''}
           <h4 class="pcard__count">${p.count}</h4>
           <p class="pcard__price">${p.price.toLocaleString('ko-KR')}<small>원</small></p>
           <p class="pcard__unit">${g.unit}</p>
@@ -232,11 +254,13 @@
         : '';
 
       return head + items.map((p) => {
-        const label = (g.title ? `${g.title} ` : '') + p.count;
+        const label = (g.title ? `${g.title} ` : '') + (p.size ? `${p.size} ` : '') + p.count;
         return `
         <div class="qrow" data-id="${p.id}">
           <div class="qrow__info">
-            <div class="qrow__name">${p.count}${p.badge ? ` <small>(${p.badge})</small>` : ''}</div>
+            <div class="qrow__name">
+              ${p.size ? `<span class="qrow__size">${p.size}</span>` : ''}${p.count}${p.badge ? ` <small>(${p.badge})</small>` : ''}
+            </div>
             <div class="qrow__price">${won(p.price)} / 상자</div>
           </div>
           <div class="qrow__ctrl">
@@ -316,10 +340,11 @@
     const out = [`[복숭아 주문] ${today}`, ''];
 
     if (lines.length) {
-      // 딱딱한 복숭아처럼 종류가 나뉜 것은 이름을 같이 적어 헷갈리지 않게 합니다.
+      // 딱딱한 복숭아처럼 종류가 나뉜 것, 1호~4호 사이즈 이름을 같이 적어
+      // 사장님이 헷갈리지 않게 합니다.
       lines.forEach((l) => {
         const g = groupOf(l.group);
-        const name = g.title ? `${g.title} ${l.count}` : l.count;
+        const name = (g.title ? `${g.title} ` : '') + (l.size ? `${l.size} ` : '') + l.count;
         out.push(`· ${name} ${l.qty}상자 — ${won(l.sum)}`);
       });
       out.push('', `상품 ${won(product)} + 택배비 ${won(ship)} = 합계 ${won(product + ship)}`, '');
@@ -502,6 +527,7 @@
     renderFeatures();
     renderGallery();
     renderSizeBar();
+    renderSizePhoto();
     renderPrices();
     renderNotices();
     renderQty();

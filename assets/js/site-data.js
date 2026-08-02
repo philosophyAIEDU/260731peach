@@ -60,6 +60,7 @@ const PRODUCT_GROUPS = [
  * 가격표
  *  id      : 내부 식별자
  *  group   : 위 PRODUCT_GROUPS 의 id
+ *  size    : 사이즈 이름 (1호 · 2호 ...). 없으면 안 붙습니다.
  *  count   : 한 상자에 들어가는 개수
  *  price   : 상자당 가격(원)
  *  badge   : 뱃지 문구 (없으면 null)
@@ -69,6 +70,7 @@ const PRODUCTS = [
   {
     id: 'gift',
     group: 'basic',
+    size: '1호',
     count: '10 · 11개',
     price: 35000,
     badge: '선물용',
@@ -77,6 +79,7 @@ const PRODUCTS = [
   {
     id: 'large',
     group: 'basic',
+    size: '2호',
     count: '12 · 13개',
     price: 30000,
     badge: null,
@@ -85,6 +88,7 @@ const PRODUCTS = [
   {
     id: 'medium',
     group: 'basic',
+    size: '3호',
     count: '14 · 15개',
     price: 25000,
     badge: null,
@@ -93,6 +97,7 @@ const PRODUCTS = [
   {
     id: 'value',
     group: 'basic',
+    size: '4호',
     count: '17개 또는 못난이',
     price: 20000,
     badge: '실속형',
@@ -143,6 +148,17 @@ const SHIPPING = {
 };
 
 /*
+ * 크기 비교 사진
+ *  '상자 안내' 코너에 실제 사진으로 크기를 보여줍니다.
+ *  없으면(파일이 비어 있으면) 그 자리가 자동으로 숨겨집니다.
+ */
+const SIZE_PHOTO = {
+  src: 'assets/images/size-compare.jpg',
+  webp: 'assets/images/size-compare.webp',
+  caption: '왼쪽부터 10 · 12 · 14 · 17개 컵에 올려 크기를 비교했어요',
+};
+
+/*
  * 사진 갤러리
  *  사진을 더 넣고 싶으시면 assets/images/ 에 파일을 올린 뒤
  *  아래 목록에 { src: '경로', caption: '설명' } 한 줄을 추가하면 됩니다.
@@ -178,6 +194,26 @@ const GALLERY = [
     src: 'assets/images/gallery-6.jpg',
     webp: 'assets/images/gallery-6.webp',
     caption: '상자마다 무게와 개수를 적어드려요',
+  },
+  {
+    src: 'assets/images/box-11-1.jpg',
+    webp: 'assets/images/box-11-1.webp',
+    caption: '1호 (10 · 11개) 상자',
+  },
+  {
+    src: 'assets/images/box-11-2.jpg',
+    webp: 'assets/images/box-11-2.webp',
+    caption: '1호 (10 · 11개) 상자',
+  },
+  {
+    src: 'assets/images/box-12-1.jpg',
+    webp: 'assets/images/box-12-1.webp',
+    caption: '2호 (12 · 13개) 상자',
+  },
+  {
+    src: 'assets/images/box-12-2.jpg',
+    webp: 'assets/images/box-12-2.webp',
+    caption: '2호 (12 · 13개) 상자',
   },
 ];
 
