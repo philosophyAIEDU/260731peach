@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>주문 장부 · 덕분에 농원</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="덕분에 농원 주문 기록장 (사장님용)">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📒</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/orders.css">
+</head>
+<body class="ledger">
+
+<header class="lhead">
+  <div class="lhead__inner">
+    <span class="lhead__title">📒 주문 장부</span>
+    <a class="lhead__link" href="index.html">판매 페이지 보기 →</a>
+  </div>
+</header>
+
+<main class="lwrap">
+
+  <!-- 안내 -->
+  <p class="lnote">
+    <b>사장님만 보시는 화면입니다.</b>
+    적어두신 내용은 <b>이 기기(휴대폰·컴퓨터)에만</b> 저장되고 인터넷으로 전송되지 않습니다.
+    다른 분이 이 주소로 들어와도 사장님이 적은 내용은 보이지 않습니다.
+    다만 브라우저 기록을 지우면 함께 지워지니, 아래 <b>백업</b>으로 가끔 저장해두세요.
+  </p>
+
+  <!-- ══════════ 1. 주문 추가 ══════════ -->
+  <section class="lcard">
+    <h2 class="lcard__title"><span class="lstep">1</span> 주문 적기</h2>
+
+    <div class="lpaste">
+      <label class="lfield">
+        <span>문자로 받은 주문 내용을 그대로 붙여넣으세요</span>
+        <textarea id="pasteBox" rows="5" placeholder="손님이 보낸 문자를 길게 눌러 복사한 뒤 여기에 붙여넣고 아래 버튼을 누르면, 이름·전화·주소가 자동으로 채워집니다."></textarea>
+      </label>
+      <button class="lbtn lbtn--sub" type="button" id="btnParse">붙여넣은 내용 읽어오기</button>
+    </div>
+
+    <div class="lgrid">
+      <label class="lfield"><span>이름</span>
+        <input type="text" id="fName" placeholder="홍길동"></label>
+      <label class="lfield"><span>전화번호</span>
+        <input type="tel" id="fPhone" placeholder="010-1234-5678"></label>
+    </div>
+
+    <label class="lfield"><span>주소</span>
+      <textarea id="fAddr" rows="2" placeholder="서울시 강남구 테헤란로 1, 202호"></textarea></label>
+
+    <div class="lgrid">
+      <label class="lfield"><span>주문 내용</span>
+        <input type="text" id="fItems" placeholder="10·11개 2상자"></label>
+      <label class="lfield"><span>상자 수</span>
+        <input type="number" id="fBoxes" min="0" max="999" placeholder="2" inputmode="numeric"></label>
+    </div>
+
+    <label class="lfield"><span>메모 <em>(택배 기사님께 전달할 내용도 여기에)</em></span>
+      <input type="text" id="fMemo" placeholder="예) 부재 시 경비실 / 8월 5일 이후 발송"></label>
+
+    <div class="lactions">
+      <button class="lbtn lbtn--main" type="button" id="btnSave">주문 저장하기</button>
+      <button class="lbtn lbtn--ghost" type="button" id="btnReset">입력 지우기</button>
+      <span class="ledit" id="editingTag" hidden>수정 중</span>
+    </div>
+  </section>
+
+  <!-- ══════════ 2. 발송 대기 ══════════ -->
+  <section class="lcard">
+    <h2 class="lcard__title">
+      <span class="lstep">2</span> 발송 대기
+      <span class="lcount" id="waitCount">0건</span>
+    </h2>
+
+    <div class="lactions lactions--top">
+      <button class="lbtn lbtn--main" type="button" id="btnCopyAll">택배 문자용으로 전체 복사</button>
+      <button class="lbtn lbtn--ghost" type="button" id="btnPreview">복사될 내용 미리보기</button>
+    </div>
+
+    <pre class="lpreview" id="copyPreview" hidden></pre>
+
+    <div class="llist" id="waitList"></div>
+  </section>
+
+  <!-- ══════════ 3. 발송 완료 ══════════ -->
+  <section class="lcard">
+    <details id="doneBox">
+      <summary class="lcard__title lcard__title--sum">
+        <span class="lstep lstep--done">3</span> 발송 완료
+        <span class="lcount" id="doneCount">0건</span>
+      </summary>
+      <div class="llist" id="doneList"></div>
+    </details>
+  </section>
+
+  <!-- ══════════ 4. 백업 ══════════ -->
+  <section class="lcard">
+    <h2 class="lcard__title"><span class="lstep lstep--plain">💾</span> 백업</h2>
+    <p class="lhelp">
+      휴대폰을 바꾸시거나 브라우저 기록을 지우면 장부가 사라집니다.
+      가끔 <b>백업 파일 내려받기</b>를 눌러 파일로 보관해두세요.
+      새 기기에서는 그 파일을 <b>백업 불러오기</b> 로 넣으면 그대로 살아납니다.
+    </p>
+    <div class="lactions">
+      <button class="lbtn lbtn--sub" type="button" id="btnExport">백업 파일 내려받기</button>
+      <label class="lbtn lbtn--sub lbtn--file">
+        백업 불러오기
+        <input type="file" id="fileImport" accept="application/json,.json" hidden>
+      </label>
+      <button class="lbtn lbtn--danger" type="button" id="btnClear">전체 삭제</button>
+    </div>
+  </section>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script src="assets/js/site-data.js"></script>
+<script src="assets/js/orders.js"></script>
+</body>
+</html>
