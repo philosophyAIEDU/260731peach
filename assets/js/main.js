@@ -486,6 +486,47 @@
     document.title = `${SITE.farmName} · 맛있는 복숭아`;
   }
 
+  /* ══════════ 판매 일시중단 ══════════ */
+  // SALE_PAUSE.active 가 true 면 주문 계산기·주문서를 통째로 숨기고
+  // 안내문으로 바꿔치기합니다. 다시 열 때는 site-data.js 에서
+  // active 만 false 로 바꾸면 원래 화면이 그대로 돌아옵니다.
+  function renderSalePause() {
+    const active = typeof SALE_PAUSE !== 'undefined' && SALE_PAUSE.active;
+    const box = $('#salePause');
+    if (!box) return;
+
+    if (!active) { box.hidden = true; return; }
+
+    const lines = (SALE_PAUSE.message || '').split('\n').filter(Boolean);
+    const tel = `tel:${SITE.phone.replace(/[^0-9+]/g, '')}`;
+
+    box.innerHTML = `
+      <div class="pause__icon">⏸️</div>
+      <h3 class="pause__title">${SALE_PAUSE.title || '주문이 잠시 중단되었습니다'}</h3>
+      ${lines.map((l) => `<p class="pause__text">${l}</p>`).join('')}
+      <p class="pause__contact">궁금하신 점은 언제든 편하게 연락 주세요 · <a href="${tel}">${SITE.phone}</a></p>`;
+    box.hidden = false;
+
+    // 주문 계산기·주문서 폼은 통째로 숨기고, 안내만 남깁니다.
+    const notice = $('#orderNotice');
+    const grid = $('#orderGrid');
+    if (notice) notice.hidden = true;
+    if (grid) grid.hidden = true;
+
+    // 히어로·모바일 하단 고정 버튼도 지금 주문할 수 없다는 걸 알 수 있게 바꿉니다.
+    const heroCta = $('#ctaHero');
+    if (heroCta) {
+      heroCta.textContent = '주문 안내 보기';
+      heroCta.classList.remove('btn--primary');
+      heroCta.classList.add('btn--ghost');
+    }
+    const floatCta = $('.floatcta');
+    if (floatCta) {
+      floatCta.textContent = '📢 주문 안내 보기';
+      floatCta.classList.add('floatcta--paused');
+    }
+  }
+
   /* ══════════ 스크롤 등장 효과 ══════════ */
   function bindReveal() {
     if (!('IntersectionObserver' in window)) {
@@ -548,6 +589,7 @@
     renderPrices();
     renderNotices();
     renderQty();
+    renderSalePause();
     bindLightbox();
     bindNav();
     bindSendButtons();

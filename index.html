@@ -66,7 +66,7 @@
 
     <!-- 모바일에서는 사진 다음에 오도록 CSS 로 자리를 잡습니다 -->
     <div class="hero__cta">
-      <a class="btn btn--primary" href="#order">주문하기</a>
+      <a class="btn btn--primary" id="ctaHero" href="#order">주문하기</a>
       <a class="btn btn--ghost" href="#price">가격 보기</a>
     </div>
   </div>
@@ -147,10 +147,13 @@
     <h2 class="h2">주문하기</h2>
     <p class="sub">수량을 고르고 아래 내용을 문자로 보내주시면 됩니다. 별도의 회원가입은 없어요.</p>
 
+    <!-- 판매 일시중단 안내 (site-data.js 의 SALE_PAUSE.active 가 true 일 때만 보입니다) -->
+    <div class="pause reveal" id="salePause" hidden><!-- JS 생성 --></div>
+
     <!-- 주문 전 안내 (내용은 site-data.js 의 ORDER_NOTICES) -->
     <div class="notice reveal" id="orderNotice"><!-- JS 생성 --></div>
 
-    <div class="order">
+    <div class="order" id="orderGrid">
       <!-- 왼쪽: 수량 선택 -->
       <div class="order__panel">
         <h3 class="h3">1. 수량 선택</h3>

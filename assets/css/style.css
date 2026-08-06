@@ -575,6 +575,39 @@ button { font-family: inherit; cursor: pointer; }
 @media (min-width: 861px) { .notice__list { grid-template-columns: 1fr 1fr; gap: 20px; } }
 
 .order { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+/* .order 의 display:grid 가 브라우저 기본 hidden 스타일보다 우선 적용돼서
+   따로 명시하지 않으면 hidden 속성을 줘도 계속 보입니다. */
+.order[hidden] { display: none; }
+
+/* 판매 일시중단 안내 */
+.pause {
+  margin: 0 0 20px;
+  padding: 40px 28px;
+  text-align: center;
+  background: #fff8f0;
+  border: 2px solid var(--peach);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+.pause__icon { font-size: 40px; margin-bottom: 8px; }
+.pause__title {
+  font-family: var(--font-title);
+  font-size: 22px;
+  color: var(--pink-deep);
+  margin: 0 0 14px;
+}
+.pause__text {
+  margin: 0 0 6px;
+  font-size: 16px;
+  color: var(--brown);
+  line-height: 1.7;
+}
+.pause__contact {
+  margin: 18px 0 0;
+  font-size: 14.5px;
+  color: var(--brown-soft);
+}
+.pause__contact a { color: var(--pink-deep); border-bottom: 1px solid rgba(214, 40, 74, .3); }
 .order__panel {
   background: var(--paper);
   border: 2px solid var(--line);
@@ -801,6 +834,11 @@ button { font-family: inherit; cursor: pointer; }
 }
 /* 주문 영역에서는 입력칸을 가리지 않도록 내려갑니다 */
 .floatcta.is-hidden { opacity: 0; transform: translateY(120%); pointer-events: none; }
+/* 판매 일시중단 중에는 덜 급해 보이도록 톤을 낮춥니다 */
+.floatcta.floatcta--paused {
+  background: var(--brown-soft);
+  box-shadow: 0 8px 24px rgba(107, 58, 30, .3);
+}
 @media (max-width: 720px) { .floatcta { display: block; } body { padding-bottom: 10px; } }
 
 /* ───────── 사진 크게보기 ───────── */
