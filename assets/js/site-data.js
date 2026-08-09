@@ -131,7 +131,7 @@ const PRODUCTS = [
  *  active 를 false 로 바꾸기만 하면 원래대로 돌아옵니다.
  */
 const SALE_PAUSE = {
-  active: true,
+  active: false,
   title: '주문이 잠시 중단되었습니다',
   // 줄바꿈은 그대로 문단이 나뉘어 표시됩니다.
   message:
