@@ -145,7 +145,7 @@
 <section class="section" id="order">
   <div class="wrap">
     <h2 class="h2">주문하기</h2>
-    <p class="sub">수량을 고르고 아래 내용을 문자로 보내주시면 됩니다. 별도의 회원가입은 없어요.</p>
+    <p class="sub">수량을 고르고 <b>주문 문자를 보내주셔야</b> 주문이 접수됩니다. 별도의 회원가입은 없어요.</p>
 
     <!-- 판매 일시중단 안내 (site-data.js 의 SALE_PAUSE.active 가 true 일 때만 보입니다) -->
     <div class="pause reveal" id="salePause" hidden><!-- JS 생성 --></div>
@@ -189,14 +189,35 @@
         <label class="field"><span>남기실 말씀 <em>(선택)</em></span>
           <textarea id="fMemo" rows="2" placeholder="예) 8월 5일 이후에 보내주세요 / 부재 시 경비실에 맡겨주세요"></textarea></label>
 
-        <h3 class="h3 h3--mt">3. 보낼 내용</h3>
+        <h3 class="h3 h3--mt">3. 주문 문자 보내기</h3>
+
+        <!-- 여기서 끝난 걸로 착각하지 않도록 크게 알립니다 -->
+        <div class="mustsend">
+          <p class="mustsend__head">📩 주문 문자를 보내야 주문이 됩니다</p>
+          <p class="mustsend__text">
+            여기까지 채우신 것만으로는 <b>아직 주문이 접수되지 않았습니다.</b>
+            아래 <b>주문 문자 보내기</b> 버튼을 눌러 문자를 <b>전송</b>해주셔야
+            사장님께 주문이 전달됩니다.
+          </p>
+        </div>
+
+        <p class="order__previewlabel">보낼 문자 내용</p>
         <pre class="preview" id="preview"></pre>
 
         <div class="order__actions">
-          <button class="btn btn--primary" id="btnCopy" type="button">주문서 복사하기</button>
-          <a class="btn btn--ghost" id="btnSms" href="#">문자로 보내기</a>
-          <a class="btn btn--ghost" id="btnTel" href="#">전화 걸기</a>
+          <a class="btn btn--primary btn--send" id="btnSms" href="#">📩 주문 문자 보내기</a>
         </div>
+        <div class="order__actions order__actions--sub">
+          <button class="btn btn--ghost" id="btnCopy" type="button">주문서 복사하기</button>
+          <a class="btn btn--ghost" id="btnTel" href="#">전화로 주문하기</a>
+        </div>
+
+        <!-- 문자 보내기를 누른 뒤에만 나타납니다 -->
+        <p class="order__sent" id="sentHint" hidden>
+          ✅ 문자 앱이 열렸습니다. <b>보내기(전송) 버튼까지 꼭 눌러주세요.</b>
+          전송해야 사장님께 주문이 들어갑니다.
+        </p>
+
         <p class="order__pchint" id="pcHint" hidden>
           💡 휴대폰으로 이 페이지를 열면 <b>문자 앱이 바로 열립니다.</b>
           컴퓨터에서는 주문서를 복사해서 문자로 붙여넣어 보내주세요.

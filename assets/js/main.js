@@ -426,7 +426,7 @@
     const text = $('#preview').textContent;
     try {
       await navigator.clipboard.writeText(text);
-      toast('주문서를 복사했어요! 문자로 붙여넣어 보내주세요 🍑');
+      toast('복사했어요! 문자에 붙여넣고 꼭 전송해주세요 📩');
     } catch (err) {
       // 구형 브라우저 · http 환경 대비
       const ta = document.createElement('textarea');
@@ -437,7 +437,7 @@
       ta.select();
       const ok = document.execCommand('copy');
       document.body.removeChild(ta);
-      toast(ok ? '주문서를 복사했어요! 🍑' : '복사가 안 되네요. 내용을 길게 눌러 직접 복사해주세요.');
+      toast(ok ? '복사했어요! 문자에 붙여넣고 꼭 전송해주세요 📩' : '복사가 안 되네요. 내용을 길게 눌러 직접 복사해주세요.');
     }
   }
 
@@ -457,7 +457,7 @@
     // PC 에서는 sms: / tel: 링크가 대부분 아무 반응이 없어서,
     // 버튼을 감추는 대신 무엇을 하면 되는지 안내합니다.
     if (!IS_PHONE) {
-      $('#btnSms').textContent = '문자로 보내기 (휴대폰에서)';
+      $('#btnSms').textContent = '📩 주문 문자 보내기 (휴대폰에서)';
       $('#pcHint').hidden = false;
     }
 
@@ -466,7 +466,11 @@
       if (!IS_PHONE) {
         e.preventDefault();
         copyOrder(); // 대신 복사해드립니다 (안내 문구는 copyOrder 안에서 표시)
+        return;
       }
+      // 문자 앱이 열린 뒤에도 '전송'을 눌러야 한다는 걸 다시 알립니다.
+      $('#sentHint').hidden = false;
+      toast('문자 앱에서 보내기 버튼까지 꼭 눌러주세요! 📩');
     });
 
     $('#btnTel').addEventListener('click', (e) => {
