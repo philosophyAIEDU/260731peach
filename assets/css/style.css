@@ -344,6 +344,64 @@ button { font-family: inherit; cursor: pointer; }
   padding: 2px 8px; font-size: 13px; color: var(--brown);
 }
 
+/* ───────── 농사 이야기 ───────── */
+.farm__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+.farm__card {
+  background: var(--paper);
+  border: 2px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 28px 22px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+}
+.farm__card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: #cfe0c0;
+}
+.farm__icon {
+  width: 58px; height: 58px; margin: 0 auto 12px;
+  display: grid; place-items: center;
+  font-size: 27px;
+  border-radius: 50%;
+  background: #eef5e8;
+}
+.farm__title {
+  margin: 0 0 8px;
+  font-family: var(--font-title);
+  font-size: 19px;
+  color: var(--green);
+}
+.farm__desc { margin: 0; font-size: 15.5px; color: var(--brown-soft); }
+
+/* 사장님 말씀 */
+.farm__note {
+  margin: 26px 0 0;
+  padding: 26px 30px;
+  background: #f5f9f1;
+  border: 2px dashed var(--green);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+.farm__note p {
+  margin: 0;
+  font-size: 16.5px;
+  line-height: 1.85;
+  color: var(--brown);
+  word-break: keep-all;
+}
+
+@media (max-width: 860px) {
+  .farm__grid { grid-template-columns: 1fr; }
+  .farm__note { padding: 22px 20px; }
+  .farm__note p { font-size: 15.5px; }
+}
+
 /* ───────── 상자 안내 ───────── */
 .boxinfo { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .boxinfo__card {

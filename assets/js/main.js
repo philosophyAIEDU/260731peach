@@ -111,6 +111,30 @@
     });
   }
 
+  /* ══════════ 농사 이야기 ══════════ */
+  function renderFarming() {
+    const box = $('#farmingBox');
+    if (!box || typeof FARMING === 'undefined') return;
+
+    box.innerHTML = `
+      <h2 class="h2">${FARMING.title}</h2>
+      ${FARMING.sub ? `<p class="sub">${FARMING.sub}</p>` : ''}
+
+      <div class="farm__grid">
+        ${(FARMING.points || []).map((p) => `
+          <article class="farm__card reveal">
+            <div class="farm__icon">${p.icon || '🌱'}</div>
+            <h3 class="farm__title">${p.title}</h3>
+            <p class="farm__desc">${p.desc}</p>
+          </article>`).join('')}
+      </div>
+
+      ${FARMING.message ? `
+        <blockquote class="farm__note reveal">
+          <p>${FARMING.message}</p>
+        </blockquote>` : ''}`;
+  }
+
   /* ══════════ 크기 비교 (개수가 적을수록 알이 큼) ══════════ */
   function renderSizeBar() {
     const sizes = [
@@ -588,6 +612,7 @@
     renderContact();
     renderFeatures();
     renderGallery();
+    renderFarming();
     renderSizeBar();
     renderSizePhoto();
     renderPrices();
