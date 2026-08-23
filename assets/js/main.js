@@ -529,7 +529,7 @@
     const tel = `tel:${SITE.phone.replace(/[^0-9+]/g, '')}`;
 
     box.innerHTML = `
-      <div class="pause__icon">⏸️</div>
+      <div class="pause__icon">${SALE_PAUSE.icon || '⏸️'}</div>
       <h3 class="pause__title">${SALE_PAUSE.title || '주문이 잠시 중단되었습니다'}</h3>
       ${lines.map((l) => `<p class="pause__text">${l}</p>`).join('')}
       <p class="pause__contact">궁금하신 점은 언제든 편하게 연락 주세요 · <a href="${tel}">${SITE.phone}</a></p>`;
